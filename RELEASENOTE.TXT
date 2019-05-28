@@ -1,0 +1,39 @@
+# 変更履歴
+2018/12/10: v1.8.2 [共通] swagger-codegen v2.2.3 を使用するように変更。v2.2.1 に関する脆弱性への対処のため。
+                   [Markdown] 不具合修正: GitHub Wikiにアップロードすると各API仕様へのタグジャンプが行えない。
+
+2018/09/27: v1.8.1 [NodeJS] メンテナンス: NodeJS向けに出力するデバイスプラグインのREADMEにServiceInformationを追加
+
+2018/09/12: v1.8.0 [NodeJS] NodeJS向けに出力するデバイスプラグインのソースコードを改善
+
+2018/03/01: v1.6.0 [Android] オプション追加: --gradle-plugin-version, --sdk, --signing-config, --template-dir
+                   [共通] 不具合修正: basePathプロパティでプロファイル名が定義されている場合に異常終了
+
+2017/12/20: v1.5.1 [Markdown][HTML] 不具合修正: APIリファレンスの「概要」が空の状態で出力される
+                   [共通] 不具合修正: input-specオプションにYAML形式のファイルを指定すると異常終了
+
+2017/11/30: v1.5.0 [Android] DeviceConnectManagerへの複数プラグイン同梱仕様対応
+                   [共通] エラーメッセージの詳細化
+                   [共通] 不具合修正: basePathの長さが1のプロファイルを定義した場合に異常終了
+                   [共通] 生成したスケルトンコードにLICENSEファイルを出力しないように修正
+
+2017/08/22: v1.4.0 [Android] 連携タイプを指定するオプション connection-type を追加
+                   [Android] Device Connect SDK v2.3.0 を使用するように変更
+
+2017/06/23: v1.3.0 [Markdown] DeviceConnectAPIリファレンス生成機能を追加
+                   [HTML] レスポンス・イベントのパラメータの説明に「Logical Name」を追加
+
+2017/04/03: v1.2.0 [HTML] DeviceConnectAPIリファレンス生成機能を追加
+
+2017/03/24: v1.1.0 [NodeJS] DeviceConnectエミュレータのスケルトン生成機能を追加
+
+2017/03/13: v1.0.0 [iOS] iOSプラグインのスケルトン生成機能を追加
+                   [HTML] HTMLアプリのスケルトン生成機能を追加
+
+2017/03/09: v0.6.0 [Android] Device Connect SDK v2.0.0 を使用するように変更
+                   [NodeJS] node-gotapiプラグインのスケルトン生成機能を追加
+
+2017/02/21: v0.5.0 YAML形式に対応
+                   input-specパラメータによる1ファイル入力に対応
+
+2017/02/08: v0.4.0 初回リリース (β版)

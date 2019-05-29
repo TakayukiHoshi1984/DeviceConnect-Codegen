@@ -9,7 +9,7 @@
             <directory>.</directory>
             <outputDirectory>.</outputDirectory>
             <includes>
-                <include>README.md</include>
+                <include>MANUAL.md</include>
                 <include>LICENSE.TXT</include>
                 <include>RELEASENOTE.TXT</include>
             </includes>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <copy file="./modules/deviceconnect-codegen/target/deviceconnect-codegen.jar" tofile="bin/deviceconnect-codegen.jar"/>
+</target>
+</project>

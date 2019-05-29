@@ -12,7 +12,7 @@ def updatePOM(pomFile, version):
     tree.write(pomFile, encoding="UTF-8")
     print 'Changed: ' + pomFile
 
-def updateREADME(filename, version):
+def updateMANUAL(filename, version):
     with open(filename, 'r') as file:
         filedata = file.read()
     
@@ -33,7 +33,7 @@ def main():
     baseDir = os.path.dirname(os.path.abspath(__file__))
     updatePOM(os.path.realpath(baseDir + '/../pom.xml'), args.version)
     updatePOM(os.path.realpath(baseDir + '/../modules/deviceconnect-codegen/pom.xml'), args.version)
-    updateREADME(os.path.realpath(baseDir + '/../README.md'), args.version)
+    updateMANUAL(os.path.realpath(baseDir + '/../MANUAL.md'), args.version)
     print 'Completed'
 
 if __name__ == "__main__":

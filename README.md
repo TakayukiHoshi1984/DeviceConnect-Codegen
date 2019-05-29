@@ -12,12 +12,12 @@ DeviceConnectCodegenのルートディレクトリで下記のコマンドを実
 $ mvn package
 ```
 
-ビルドを実行すると、本ツールのバイナリと[配布用zip](#ファイル構成)がそれぞれ下記の場所に出力されます。
+ビルドを実行すると、本ツールのバイナリと配布用zipがそれぞれ下記の場所に出力されます。
 
 |項目|出力先|
 |:--|:--|
 |バイナリ|DeviceConnectCodegen/bin/deviceconnect-codegen.jar|
-|配布用zip|DeviceConnectCodegen/target/deviceconnect-codegen-project-1.9.0-dist.zip|
+|配布用zip|DeviceConnectCodegen/target/deviceconnect-codegen-project-X.Y.Z-dist.zip|
 
 ### バージョン更新
 新しいバージョンを開発する場合は、以下のPython 2.x スクリプトで全体的にバージョン設定を書き換えること。

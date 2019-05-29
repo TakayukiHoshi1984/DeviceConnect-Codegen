@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/modules/deviceconnect-codegen/deviceconnect-codegen.iml" filepath="$PROJECT_DIR$/modules/deviceconnect-codegen/deviceconnect-codegen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deviceconnect-codegen-project.iml" filepath="$PROJECT_DIR$/deviceconnect-codegen-project.iml" />
+    </modules>
+  </component>
+</project>

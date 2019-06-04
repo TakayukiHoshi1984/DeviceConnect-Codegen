@@ -2,8 +2,8 @@
 
 PROJECT_DIR=$(cd $(dirname $0) && pwd)
 TEMP_DIR=${PROJECT_DIR}/temp-`date +%s`
-REVISION="v2.2.1-release-20170324"
-REVISION_UNZIPPED="2.2.1-release-20170324"
+REVISION="v2.2.7-release-20190322"
+REVISION_UNZIPPED="2.2.7-release-20190322"
 SPEC_ZIP_NAME=${REVISION}.zip
 SPEC_ZIP_URL=https://github.com/TakayukiHoshi1984/DeviceConnect-Spec/archive/${SPEC_ZIP_NAME}
 SPEC_DIR=${PROJECT_DIR}/standard-profile-specs

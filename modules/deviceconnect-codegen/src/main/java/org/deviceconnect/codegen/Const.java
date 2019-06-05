@@ -16,14 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-final class Const {
+public final class Const {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Const.class);
 
     static final ResourceBundle MESSAGES = ResourceBundle.getBundle("Messages", Locale.getDefault(),
             ResourceBundleWithUtf8.UTF8_ENCODING_CONTROL);
 
-    static final Options OPTIONS = createOptions();
+    public static final Options OPTIONS = createOptions();
 
     static Map<String, DConnectCodegenConfig> configs = new HashMap<String, DConnectCodegenConfig>();
 
@@ -101,88 +101,5 @@ final class Const {
         Option option = new Option(opt, longOpt, hasArg, description);
         option.setRequired(required);
         return option;
-    }
-
-    static class ErrorMessages {
-
-        // 引数指定
-        enum CommandOption {
-
-            MISSING_OPTION("errorMissingOption"),
-            MISSING_ARGUMENT("errorMissingArgument"),
-            ALREADY_SELECTED_OPTION("errorAlreadySelectedOption"),
-            UNDEFINED_OPTION("errorUndefinedOption"),
-            INVALID_SWAGGER("errorInvalidSwagger");
-
-            private final String key;
-
-            CommandOption(final String key) {
-                this.key = key;
-            }
-
-            public String getMessage() {
-                return MESSAGES.getString(key);
-            }
-
-            public String getMessage(final List<Object> options) {
-                return getMessage() + ": \n" + concatOptions(options);
-            }
-
-            public String getMessage(final Option opt) {
-                return getMessage() + ": " + opt.getLongOpt();
-            }
-
-            public String getMessage(final String optName) {
-                return getMessage() + ": " + optName;
-            }
-
-            private static String concatOptions(List<Object> list) {
-                String result = "";
-                for (int i = 0; i < list.size(); i++) {
-                    Object opt = list.get(i);
-                    if (opt == null) {
-                        continue;
-                    }
-
-                    result += " - ";
-                    if (opt instanceof OptionGroup) {
-                        OptionGroup group = (OptionGroup) opt;
-                        String groupStr = "";
-                        for (Iterator it = group.getOptions().iterator(); it.hasNext(); ) {
-                            Option o = (Option) it.next();
-                            groupStr += o.getLongOpt();
-                            if (it.hasNext()) {
-                                groupStr += " or ";
-                            }
-                        }
-                        result += groupStr + "\n";
-                    } else {
-                        Option found = OPTIONS.getOption(opt.toString());
-                        if (found != null) {
-                            result += found.getLongOpt() + "\n";
-                        }
-                    }
-                }
-                return result;
-            }
-        }
-
-        // パス定義
-        enum Path {
-            TOO_LONG("errorProfileSpecTooLongPath"),
-            TOO_SHORT("errorProfileSpecTooShortPath"),
-            NOT_STARTED_WITH_ROOT("errorProfileSpecPathNotStartedWithRoot");
-
-            private final String key;
-
-            Path(final String key) {
-                this.key = key;
-            }
-
-            public String getMessage(final String path) {
-                String template = MESSAGES.getString(key);
-                return template.replace("%path%", path);
-            }
-        }
     }
 }

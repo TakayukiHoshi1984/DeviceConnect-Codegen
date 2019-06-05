@@ -7,6 +7,7 @@
 package org.deviceconnect.codegen;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -23,6 +24,7 @@ import org.apache.commons.cli.*;
 import org.deviceconnect.codegen.app.HtmlAppCodegenConfig;
 import org.deviceconnect.codegen.docs.HtmlDocsCodegenConfig;
 import org.deviceconnect.codegen.docs.MarkdownDocsCodegenConfig;
+import org.deviceconnect.codegen.error.Errors;
 import org.deviceconnect.codegen.util.SortedSwagger;
 import org.deviceconnect.codegen.util.SwaggerJsonValidator;
 import org.deviceconnect.codegen.util.SwaggerUtils;
@@ -35,6 +37,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static org.deviceconnect.codegen.Const.MESSAGES;
+import static org.deviceconnect.codegen.error.ErrorUtils.reportError;
 
 public class DConnectCodegen {
 
@@ -165,34 +168,8 @@ public class DConnectCodegen {
                 }
                 return;
             }
-        } catch (MissingOptionException e) {
-            printError(Const.ErrorMessages.CommandOption.MISSING_OPTION.getMessage(e.getMissingOptions()));
-            return;
-        } catch (MissingArgumentException e) {
-            printError(Const.ErrorMessages.CommandOption.MISSING_ARGUMENT.getMessage(e.getOption()));
-            return;
-        } catch (AlreadySelectedException e) {
-            printError(Const.ErrorMessages.CommandOption.ALREADY_SELECTED_OPTION.getMessage(e.getOption()));
-            return;
-        } catch (UnrecognizedOptionException e) {
-            printError(Const.ErrorMessages.CommandOption.UNDEFINED_OPTION.getMessage(e.getOption()));
-            return;
-        } catch (IllegalPathFormatException e) {
-            String errorMessage;
-            switch (e.getReason()) {
-                case TOO_LONG:
-                    errorMessage = Const.ErrorMessages.Path.TOO_LONG.getMessage(e.getPath());
-                    break;
-                case TOO_SHORT:
-                    errorMessage = Const.ErrorMessages.Path.TOO_SHORT.getMessage(e.getPath());
-                    break;
-                case NOT_STARTED_WITH_ROOT:
-                    errorMessage = Const.ErrorMessages.Path.NOT_STARTED_WITH_ROOT.getMessage(e.getPath());
-                    break;
-                default:
-                    throw new RuntimeException("Undefined error");
-            }
-            printError(errorMessage);
+        } catch (ParseException e) {
+            reportError(e);
             return;
         } catch (DuplicatedPathException e) {
             printDuplicatedPathError(e);
@@ -322,21 +299,20 @@ public class DConnectCodegen {
             throw new IllegalArgumentException("file must be JSON or YAML.");
         }
 
-        JsonNode jsonNode = mapper.readTree(file);
+        JsonNode jsonNode;
+        try {
+            jsonNode = mapper.readTree(file);
+        } catch (JsonProcessingException e) {
+            reportError(new Errors.InvalidJson(file, e));
+            return false;
+        }
+
         SwaggerJsonValidator.Result result = JSON_VALIDATOR.validate(jsonNode);
         if (result.isSuccess()) {
             return true;
         }
 
-        String template = Const.ErrorMessages.CommandOption.INVALID_SWAGGER.getMessage();
-        String errorMessage = template.replace("%file%", file.getName());
-        String reasons = "";
-        for (SwaggerJsonValidator.Error error : result.getErrors()) {
-            String pointer = error.getJsonPointer();
-            String reason = error.getMessage();
-            reasons += " - Pointer = " + pointer + ", Reason = " + reason + "\n";
-        }
-        printError(errorMessage + ": \n" + reasons);
+        reportError(new Errors.InvalidSwagger(file, result.getErrors()));
         return false;
     }
 
@@ -345,7 +321,7 @@ public class DConnectCodegen {
     }
 
     private static void printDuplicatedPathError(final DuplicatedPathException e) {
-        String template = MESSAGES.getString("errorProfileSpecDuplicatedPath");
+        String template = MESSAGES.getString("errorDuplicatedPath");
         List<NameDuplication> duplications = e.getDuplications();
 
         String pathNames = "";

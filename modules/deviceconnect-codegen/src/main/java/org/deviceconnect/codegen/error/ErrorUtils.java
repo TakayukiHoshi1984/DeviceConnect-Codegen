@@ -1,18 +1,31 @@
 package org.deviceconnect.codegen.error;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.cli.AlreadySelectedException;
 import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.UnrecognizedOptionException;
 import org.deviceconnect.codegen.IllegalPathFormatException;
-import org.deviceconnect.codegen.util.SwaggerJsonValidator;
 
 import java.io.File;
-import java.util.List;
 
 public class ErrorUtils {
+
+    public static void reportError(final File file, final IllegalPathFormatException e) {
+        CodegenError error;
+        switch (e.getReason()) {
+            case TOO_SHORT:
+            case TOO_LONG:
+                error = new Errors.InvalidPathLength(file, e.getPath());
+                break;
+            case NOT_STARTED_WITH_ROOT:
+                error = new Errors.InvalidPathNotStartedWithRoot(file, e.getPath());
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        reportError(error);
+    }
 
     public static void reportError(final org.apache.commons.cli.ParseException e) {
         CodegenError error;

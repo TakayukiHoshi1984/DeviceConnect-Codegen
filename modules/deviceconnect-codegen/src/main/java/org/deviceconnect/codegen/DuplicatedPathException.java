@@ -7,6 +7,8 @@
 package org.deviceconnect.codegen;
 
 
+import org.deviceconnect.codegen.util.NameDuplication;
+
 import java.util.ArrayList;
 import java.util.List;
 

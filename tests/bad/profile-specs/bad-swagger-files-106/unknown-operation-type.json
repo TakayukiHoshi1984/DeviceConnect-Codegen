@@ -7,8 +7,9 @@
 	"basePath": "/gotapi/testProfile",
 	"paths": {
 		"/testAttribute": {
-			"get": {
-				"operationId": "testAttributeGet",
+			"put": {
+				"operationId": "testProfileTestAttributePut",
+				"x-type": "unknown-type",
 				"summary": "",
 				"description": "",
 				"parameters": [{
@@ -31,37 +32,7 @@
 							}
 						}
 					}
-				},
-				"x-type": "one-shot"
-			}
-		},
-		"/testInterface/testAttribute": {
-			"get": {
-				"operationId": "testInterfaceTestAttributeGet",
-				"summary": "",
-				"description": "",
-				"parameters": [{
-					"name": "serviceId",
-					"in": "query",
-					"required": true,
-					"type": "string"
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/CommonResponse"
-						},
-						"examples": {
-							"application/json": {
-								"result": 0,
-								"product": "Example System",
-								"version": "1.0.0"
-							}
-						}
-					}
-				},
-				"x-type": "one-shot"
+				}
 			}
 		}
 	},

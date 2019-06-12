@@ -8,6 +8,7 @@
 	"paths": {
 		"/testAttribute": {
 			"get": {
+				"operationId": "testAttributeGet",
 				"summary": "",
 				"description": "",
 				"parameters": [{
@@ -36,6 +37,7 @@
 		},
 		"/testInterface/testAttribute": {
 			"get": {
+				"operationId": "testInterfaceTestAttributeGet",
 				"summary": "",
 				"description": "",
 				"parameters": [{

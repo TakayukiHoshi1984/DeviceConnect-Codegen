@@ -4,7 +4,7 @@
 LANG="deviceConnectAndroidPlugin"
 
 # プロファイル定義ファイル
-SPEC="./profile-specs/bad-swagger-files-102"
+SPEC="./profile-specs/bad-broken-json.json"
 
 # スケルトンコード出力先
 OUTPUT_DIR="./output/Android/MyPlugin"
@@ -21,6 +21,6 @@ DISPLAY_NAME="MyPlugin"
 # スケルトンコード生成ツールのバイナリ
 JAR_FILE="../../bin/deviceconnect-codegen.jar"
 
-ARGS="--input-spec-dir $SPEC --lang $LANG --package-name $PACKAGE_NAME  --connection-type $CONNECTION_TYPE  --display-name $DISPLAY_NAME  --output $OUTPUT_DIR"
+ARGS="--input-spec $SPEC --lang $LANG --package-name $PACKAGE_NAME  --connection-type $CONNECTION_TYPE  --display-name $DISPLAY_NAME  --output $OUTPUT_DIR"
 
 java -Dfile.encoding=UTF-8 -jar $JAR_FILE $ARGS

@@ -93,6 +93,7 @@ public final class Const {
         options.addOption("r", "gradle-plugin-version", true, "version of Android Plugin for Gradle");
         options.addOption("k", "sdk", true, "location of Device Connect SDKs");
         options.addOption("g", "signing-configs", true, "location of singing configs");
+        options.addOption("w", "overwrite", false, "allow to delete a directory which exists already on the specified path by `output` option before output.");
 
         return options;
     }

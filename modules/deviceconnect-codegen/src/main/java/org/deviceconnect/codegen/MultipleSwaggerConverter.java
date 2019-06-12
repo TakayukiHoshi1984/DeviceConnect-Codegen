@@ -11,11 +11,12 @@ import io.swagger.models.Info;
 import io.swagger.models.Model;
 import io.swagger.models.Path;
 import io.swagger.models.Swagger;
+import org.deviceconnect.codegen.util.NameDuplication;
+import org.deviceconnect.codegen.util.NameDuplicationCounter;
 import org.deviceconnect.codegen.util.SortedSwagger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,32 +118,5 @@ class MultipleSwaggerConverter {
         profile.setDefinitions(swagger.getDefinitions());
         profile.setPaths(new HashMap<String, Path>());
         return profile;
-    }
-
-    private static class NameDuplicationCounter {
-
-        private final Map<String, NameDuplication> duplications = new HashMap<>();
-
-        private NameDuplicationCounter() {}
-
-        void count(final String name) {
-            NameDuplication dup = duplications.get(name);
-            if (dup == null) {
-                dup = new NameDuplication(name);
-                duplications.put(name, dup);
-            }
-            dup.countUp();
-        }
-
-        List<NameDuplication> getDuplications() {
-            List<NameDuplication> result = new ArrayList<>();
-            for (Map.Entry<String, NameDuplication> entry : duplications.entrySet()) {
-                NameDuplication dup = entry.getValue();
-                if (dup.isDuplicated()) {
-                    result.add(dup);
-                }
-            }
-            return result;
-        }
     }
 }

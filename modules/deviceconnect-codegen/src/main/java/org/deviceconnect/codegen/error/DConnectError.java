@@ -3,7 +3,7 @@ package org.deviceconnect.codegen.error;
 
 import java.io.File;
 
-abstract class DeviceConnectError extends CodegenError {
+public abstract class DConnectError extends CodegenError {
 
     private final String mDescriptionId;
 
@@ -11,9 +11,9 @@ abstract class DeviceConnectError extends CodegenError {
 
     private final String mApiPath;
 
-    DeviceConnectError(final String descriptionId,
-                       final File file,
-                       final String apiPath) {
+    DConnectError(final String descriptionId,
+                  final File file,
+                  final String apiPath) {
         mDescriptionId = descriptionId;
         mFile = file;
         mApiPath = apiPath;
@@ -34,7 +34,7 @@ abstract class DeviceConnectError extends CodegenError {
     @Override
     String getMessage() {
         ErrorFormat format = new ErrorFormat("deviceConnect");
-        format.addProp("description", description());
+        format.addProp("description", getMessageForKey(description()));
         format.addProp("filePath", filePath().getAbsolutePath());
         format.addProp("apiPath", apiPath());
         return format.format();

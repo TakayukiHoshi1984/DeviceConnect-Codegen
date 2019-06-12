@@ -12,7 +12,7 @@ public class IllegalPathFormatException extends IllegalProfileSpecException {
     private final Reason reason;
     private final String path;
 
-    enum Reason {
+    public enum Reason {
         NOT_STARTED_WITH_ROOT,
         TOO_LONG,
         TOO_SHORT

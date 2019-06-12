@@ -19,7 +19,7 @@ CONNECTION_TYPE="binder"
 DISPLAY_NAME="MyPlugin"
 
 # スケルトンコード生成ツールのバイナリ
-JAR_FILE="../bin/deviceconnect-codegen.jar"
+JAR_FILE="../../bin/deviceconnect-codegen.jar"
 
 ARGS="--undefined-option --input-spec-dir $SPEC --lang $LANG --package-name $PACKAGE_NAME  --connection-type $CONNECTION_TYPE  --display-name $DISPLAY_NAME  --output $OUTPUT_DIR"
 

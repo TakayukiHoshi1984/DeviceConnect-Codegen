@@ -6,7 +6,7 @@ import org.deviceconnect.codegen.util.ResourceBundleWithUtf8;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-abstract class CodegenError {
+public abstract class CodegenError {
 
     String mMessage;
 

@@ -104,78 +104,75 @@ public final class Errors {
         }
     }
 
-    public static class InvalidMethod extends DeviceConnectError {
+    public static class InvalidMethod extends DConnectError {
         public InvalidMethod(final File file, final String apiPath) {
             super("errorInvalidMethod", file, apiPath);
         }
     }
 
-    public static class DuplicatedPath extends DeviceConnectError {
+    public static class DuplicatedPath extends DConnectError {
         public DuplicatedPath(final File file, final String apiPath) {
             super("errorDuplicatedPath", file, apiPath);
         }
     }
 
-    public static class InvalidPathLength extends DeviceConnectError {
+    public static class InvalidPathLength extends DConnectError {
         public InvalidPathLength(final File file, final String apiPath) {
             super("errorInvalidPathLength", file, apiPath);
         }
     }
 
-    public static class InvalidPathNotStartedWithRoot extends DeviceConnectError {
+    public static class InvalidPathNotStartedWithRoot extends DConnectError {
         public InvalidPathNotStartedWithRoot(final File file, final String apiPath) {
             super("errorInvalidPathNotStartedWithRoot", file, apiPath);
         }
     }
 
-    public static class MissingEvent extends DeviceConnectError {
+    public static class MissingEvent extends DConnectError {
         public MissingEvent(final File file, final String apiPath) {
             super("errorMissingEvent", file, apiPath);
         }
     }
 
-    public static class MissingOperationId extends DeviceConnectError {
+    public static class MissingOperationId extends DConnectError {
         public MissingOperationId(final File file, final String apiPath) {
             super("errorMissingOperationId", file, apiPath);
         }
     }
 
-    public static class MissingOperationType extends DeviceConnectError {
+    public static class MissingOperationType extends DConnectError {
         public MissingOperationType(final File file, final String apiPath) {
             super("errorMissingOperationType", file, apiPath);
         }
     }
 
-    public static class MissingRequiredPropertyForEvent extends DeviceConnectError {
-        public MissingRequiredPropertyForEvent(final File file, final String apiPath) {
-            super("errorMissingRequiredPropertyForEvent", file, apiPath);
-        }
-    }
+//    public static class MissingRequiredPropertyForEvent extends DConnectError {
+//        public MissingRequiredPropertyForEvent(final File file, final String apiPath) {
+//            super("errorMissingRequiredPropertyForEvent", file, apiPath);
+//        }
+//    }
 
-    public static class UnknownOperationType extends DeviceConnectError {
+    public static class UnknownOperationType extends DConnectError {
         public UnknownOperationType(final File file, final String apiPath) {
             super("errorUnknownOperationType", file, apiPath);
         }
     }
 
-    public static class AlreadyCreatedTarget extends CodegenError {
-        public AlreadyCreatedTarget() {
-            String message = getMessageForKey("errorAlreadyCreatedTarget");
-            mMessage = message;
+    public static class AlreadyCreatedTarget extends OutputError {
+        public AlreadyCreatedTarget(final File outputDir) {
+            super("errorAlreadyCreatedTarget", outputDir);
         }
     }
 
-    public static class NotEnoughDiscSpace extends CodegenError {
-        public NotEnoughDiscSpace() {
-            String message = getMessageForKey("errorNotEnoughDiscSpace");
-            mMessage = message;
-        }
-    }
+//    public static class NotEnoughDiscSpace extends OutputError {
+//        public NotEnoughDiscSpace(final File outputDir) {
+//            super("errorNotEnoughDiscSpace", outputDir);
+//        }
+//    }
 
-    public static class NoWritePermission extends CodegenError {
-        public NoWritePermission() {
-            String message = getMessageForKey("errorNoWritePermission");
-            mMessage = message;
+    public static class NoWritePermission extends OutputError {
+        public NoWritePermission(final File outputDir) {
+            super("errorNoWritePermission", outputDir);
         }
     }
 }

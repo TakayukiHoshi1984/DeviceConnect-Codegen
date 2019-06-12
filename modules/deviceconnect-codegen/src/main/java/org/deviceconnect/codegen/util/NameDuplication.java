@@ -4,10 +4,11 @@
  Released under the MIT license
  http://opensource.org/licenses/mit-license.php
  */
-package org.deviceconnect.codegen;
+package org.deviceconnect.codegen.util;
 
 
-class NameDuplication {
+public class NameDuplication {
+
     private final String name;
     private int count = 0;
 

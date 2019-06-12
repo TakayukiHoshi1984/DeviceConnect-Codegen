@@ -414,7 +414,7 @@ public class DConnectCodegen {
                         // API タイプが不正
                         errors.add(new Errors.UnknownOperationType(file, path.getKey()));
                     } else if (method == HttpMethod.PUT && "event".equals(type)) {
-                        JsonNode event = getEventMessage(op);
+                        Object event = getEventMessage(op);
                         if (event == null) {
                             // イベント API に対してイベントメッセージが定義されていない
                             errors.add(new Errors.MissingEvent(file, path.getKey()));
@@ -503,14 +503,14 @@ public class DConnectCodegen {
         return null;
     }
 
-    private static JsonNode getEventMessage(final Operation operation) {
+    private static HashMap getEventMessage(final Operation operation) {
         Map<String, Object> extensions = operation.getVendorExtensions();
         if (extensions == null) {
             return null;
         }
-        Object type = extensions.get("x-event");
-        if (type instanceof JsonNode) {
-            return (JsonNode) type;
+        Object event = extensions.get("x-event");
+        if (event instanceof HashMap) {
+            return (HashMap) event;
         }
         return null;
     }

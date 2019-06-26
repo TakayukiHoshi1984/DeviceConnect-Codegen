@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
-    compile 'org.deviceconnect:dconnect-device-plugin-sdk:2.3.0'
+    compile 'org.deviceconnect:dconnect-device-plugin-sdk:{{{deviceConnectPluginSdkVersion}}}'
 }
 
 repositories {
@@ -12,13 +12,13 @@ repositories {
 
 android {
 
-    compileSdkVersion 23
+    compileSdkVersion {{compileSdkVersion}}
     buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "{{invokerPackage}}"
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion {{minSdkVersion}}
+        targetSdkVersion {{targetSdkVersion}}
         versionCode 1
         versionName '1.0.0'
     }

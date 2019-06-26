@@ -41,6 +41,20 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
     private final String apiDocPath = "docs/";
     private final String modelDocPath = "docs/";
 
+    {
+        addOption("targetSdkVersion", "", "28");
+        addOption("minSdkVersion", "", "19");
+        addOption("compileSdkVersion", "", "28");
+        addOption("deviceConnectPluginSdkVersion", "", "2.7.2");
+        addOption("deviceConnectSdkForAndroidVersion", "", "2.3.1");
+    }
+
+    private void addOption(final String name, final String description, final String defaultValue) {
+        CliOption option = CliOption.newString(name, description);
+        option.setDefault(defaultValue);
+        this.cliOptions.add(option);
+    }
+
     @Override
     public ValidationResultSet validateOptions(final CommandLine cmd, final ClientOpts clientOpts) {
         ValidationResultSet resultSet = new ValidationResultSet();

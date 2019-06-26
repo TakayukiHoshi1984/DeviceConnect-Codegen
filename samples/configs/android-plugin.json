@@ -1,0 +1,6 @@
+{
+  "compileSdkVersion": "28",
+  "minSdkVersion": "19",
+  "targetSdkVersion": "28",
+  "deviceConnectPluginSdkVersion": "2.7.2"
+}

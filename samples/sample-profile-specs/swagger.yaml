@@ -3,25 +3,12 @@ info:
   title: Device Connect API
   version: 2.0.0
   description: ''
-consumes: []
+consumes: ['application/x-www-form-urlencoded', 'multipart/form-data']
 basePath: /gotapi
 paths:
   /deviceOrientation/onDeviceOrientation:
-    get:
-      x-type: one-shot
-      summary: ''
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/DeviceOrientationResponse'
     put:
+      operationId: deviceOrientationOnDeviceOrientationPut
       x-type: event
       summary: ''
       description: ''
@@ -40,10 +27,35 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/EventRegistrationResponse'
+          examples:
+            application/json:
+              result: 0
+              product: Example System
+              version: 1.0.0
       x-event:
         schema:
           $ref: '#/definitions/DeviceOrientationEvent'
+        examples:
+          application/json:
+            serviceId: dummy.deviceconnect.org
+            profile: deviceorientation
+            attribute: ondeviceorientation
+            orientation:
+              acceleration:
+                x: 0.12345678901234566
+                'y': 0.9876543210987654
+                z: 0.24680135792468014
+              rotationRate:
+                alpha: -0.24680135792468014
+                beta: 0.12345678901234566
+                gamma: -0.9876543210987654
+              accelerationIncludingGravity:
+                x: 0.24680135792468014
+                'y': 0.12345678901234566
+                z: 9.87654321098
+              interval: 0
     delete:
+      operationId: deviceOrientationOnDeviceOrientationDelete
       x-type: event
       summary: ''
       description: ''
@@ -57,8 +69,14 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/EventUnregistrationResponse'
+          examples:
+            application/json:
+              result: 0
+              product: Example System
+              version: 1.0.0
   /canvas/drawImage:
     post:
+      operationId: canvasDrawImagePost
       x-type: one-shot
       summary: ''
       description: ''
@@ -95,7 +113,13 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/CanvasControlResponse'
+          examples:
+            application/json:
+              result: 0
+              product: Example System
+              version: 1.0.0
     delete:
+      operationId: canvasDrawImageDelete
       x-type: one-shot
       summary: ''
       description: ''
@@ -109,8 +133,14 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/CanvasControlResponse'
+          examples:
+            application/json:
+              result: 0
+              product: Example System
+              version: 1.0.0
   /battery:
     get:
+      operationId: batteryGet
       x-type: one-shot
       summary: スマートデバイスのバッテリー情報を取得する。
       description: ''
@@ -133,244 +163,6 @@ paths:
               chargingTime: 10
               dischargingTime: 0
               level: 0.8
-  /battery/charging:
-    get:
-      x-type: one-shot
-      summary: スマートデバイスの充電状態フラグを取得する。
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/ChargingResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-              charging: true
-  /battery/chargingTime:
-    get:
-      x-type: one-shot
-      summary: スマートデバイスの充電完了時間を取得する。
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/ChargingTimeResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-              chargingTime: 10
-  /battery/dischargingTime:
-    get:
-      x-type: one-shot
-      summary: スマートデバイスの放電完了時間を取得する。
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/DischargingTimeResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-              dischargingTime: 0
-  /battery/level:
-    get:
-      x-type: one-shot
-      summary: スマートデバイスのバッテリー残量を取得する。
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/LevelResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-              level: 0.8
-  /battery/onBatteryChange:
-    get:
-      x-type: one-shot
-      summary: ''
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/OnBatteryChangeResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-              battery:
-                chargingTime: 10
-                dischargingTime: 0
-                level: 0.8
-    put:
-      x-type: event
-      summary: ''
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-        - name: interval
-          in: formData
-          required: false
-          type: integer
-          format: int64
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/EventRegistrationResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-      x-event:
-        schema:
-          $ref: '#/definitions/OnBatteryChangeEvent'
-        examples:
-          application/json:
-            serviceId: example-service-id
-            profile: battery
-            attribute: onBatteryChange
-            battery:
-              chargingTime: 10
-              dischargingTime: 0
-              level: 0.8
-    delete:
-      x-type: event
-      summary: ''
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/EventUnregistrationResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-  /battery/onChargingChange:
-    get:
-      x-type: one-shot
-      summary: ''
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/OnChargingChangeResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-              battery:
-                charging: true
-    put:
-      x-type: event
-      summary: ''
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-        - name: interval
-          in: formData
-          required: false
-          type: integer
-          format: int64
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/EventRegistrationResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
-      x-event:
-        schema:
-          $ref: '#/definitions/OnChargingChangeEvent'
-        examples:
-          application/json:
-            serviceId: example-service-id
-            profile: battery
-            attribute: onChargingChange
-            battery:
-              charging: true
-    delete:
-      x-type: event
-      summary: ''
-      description: ''
-      parameters:
-        - name: serviceId
-          in: query
-          required: true
-          type: string
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/EventUnregistrationResponse'
-          examples:
-            application/json:
-              result: 0
-              product: Example System
-              version: 1.0.0
 definitions:
   AllResponse:
     type: object
@@ -386,8 +178,7 @@ definitions:
           chargingTime:
             type: integer
             format: int64
-            description: >-
-              完全充電までの時間(秒)。<br>満充電、または非充電中の場合は0。<br>システムとして取得出来ない場合はNumber.MAX_VALUE。
+            description: 完全充電までの時間(秒)。<br>満充電、または非充電中の場合は0。<br>システムとして取得出来ない場合はNumber.MAX_VALUE。
           dischargingTime:
             type: integer
             format: int64
@@ -488,8 +279,7 @@ definitions:
               chargingTime:
                 type: integer
                 format: int64
-                description: >-
-                  完全充電までの時間(秒)。<br>満充電、または非充電中の場合は0。<br>システムとして取得出来ない場合はNumber.MAX_VALUE。
+                description: 完全充電までの時間(秒)。<br>満充電、または非充電中の場合は0。<br>システムとして取得出来ない場合はNumber.MAX_VALUE。
               dischargingTime:
                 type: integer
                 format: int64
@@ -514,8 +304,7 @@ definitions:
               chargingTime:
                 type: integer
                 format: int64
-                description: >-
-                  完全充電までの時間(秒)。<br>満充電、または非充電中の場合は0。<br>システムとして取得出来ない場合はNumber.MAX_VALUE。
+                description: 完全充電までの時間(秒)。<br>満充電、または非充電中の場合は0。<br>システムとして取得出来ない場合はNumber.MAX_VALUE。
               dischargingTime:
                 type: integer
                 format: int64

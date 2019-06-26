@@ -10,6 +10,7 @@
     "paths": {
         "/deviceOrientation/onDeviceOrientation": {
             "put": {
+                "operationId": "deviceOrientationOnDeviceOrientationPut",
                 "x-type": "event",
                 "summary": "",
                 "description": "",
@@ -75,6 +76,7 @@
                 }
             },
             "delete": {
+                "operationId": "deviceOrientationOnDeviceOrientationDelete",
                 "x-type": "event",
                 "summary": "",
                 "description": "",
@@ -105,6 +107,7 @@
         },
         "/canvas/drawImage": {
             "post" : {
+                "operationId": "canvasDrawImagePost",
                 "x-type": "one-shot",
                 "summary": "",
                 "description": "",
@@ -164,6 +167,7 @@
                 }
             },
             "delete": {
+                "operationId": "canvasDrawImageDelete",
                 "x-type": "one-shot",
                 "summary": "",
                 "description": "",
@@ -194,6 +198,7 @@
         },
         "/battery": {
             "get": {
+                "operationId": "batteryGet",
                 "x-type": "one-shot",
                 "summary": "スマートデバイスのバッテリー情報を取得する。",
                 "description": "",

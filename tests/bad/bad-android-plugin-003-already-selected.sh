@@ -24,6 +24,6 @@ DISPLAY_NAME="MyPlugin"
 # スケルトンコード生成ツールのバイナリ
 JAR_FILE="../../bin/deviceconnect-codegen.jar"
 
-ARGS="--input-spec $SPEC --input-spec-dir $SPEC_DIR --lang $LANG --template-dir templates/deviceConnectAndroidPlugin  --package-name $PACKAGE_NAME  --connection-type $CONNECTION_TYPE  --display-name $DISPLAY_NAME  --output $OUTPUT_DIR"
+ARGS="--input-spec $SPEC --input-spec $SPEC_DIR --lang $LANG --template-dir templates/deviceConnectAndroidPlugin  --package-name $PACKAGE_NAME  --connection-type $CONNECTION_TYPE  --display-name $DISPLAY_NAME  --output $OUTPUT_DIR"
 
 java -Dfile.encoding=UTF-8 -jar $JAR_FILE $ARGS

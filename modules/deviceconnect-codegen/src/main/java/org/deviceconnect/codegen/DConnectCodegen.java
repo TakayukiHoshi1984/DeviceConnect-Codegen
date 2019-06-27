@@ -119,10 +119,18 @@ public class DConnectCodegen {
                 }
                 config.setOutputDir(output);
             }
+
             if (cmd.hasOption("i")) {
                 File file = new File(cmd.getOptionValue("i"));
-                if(!parseSwaggerFromFile(file, clientOptInput, config)) {
-                    return;
+                if (file.isFile()) {
+                    if(!parseSwaggerFromFile(file, clientOptInput, config)) {
+                        return;
+                    }
+                } else if (file.isDirectory()) {
+                    File dir = file;
+                    if(!parseSwaggerFromDirectory(dir, clientOptInput, config)) {
+                        return;
+                    }
                 }
             } else if (cmd.hasOption("s")) {
                 File dir = new File(cmd.getOptionValue("s"));

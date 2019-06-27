@@ -77,7 +77,7 @@ public final class Const {
         OptionGroup inputSpecOptions = new OptionGroup();
         inputSpecOptions.setRequired(true);
         inputSpecOptions.addOption(new Option("s", "input-spec-dir", true, "directory of the swagger specs"));
-        inputSpecOptions.addOption(new Option("i", "input-spec", true, "location of the swagger spec, as URL or file"));
+        inputSpecOptions.addOption(new Option("i", "input-spec", true, "location of the swagger spec, as URL, file or directory"));
         options.addOptionGroup(inputSpecOptions);
 
         // Optional

@@ -12,7 +12,7 @@ DATETIME=`date +%Y%m%d_%H%M%S_%3N`
 
 OUTPUT="$SCRIPT_DIR/$DATETIME"
 
-ARGS="--input-spec-dir $SPEC --lang deviceConnectAndroidPlugin --template-dir templates/deviceConnectAndroidPlugin  --package-name com.mydomain.myplugin  --connection-type binder  --display-name MyPlugin  --output $OUTPUT"
+ARGS="--input-spec $SPEC --lang deviceConnectAndroidPlugin --template-dir templates/deviceConnectAndroidPlugin  --package-name com.mydomain.myplugin  --connection-type binder  --display-name MyPlugin  --output $OUTPUT"
 
 mkdir -p $OUTPUT
 touch $OUTPUT/.placeholder

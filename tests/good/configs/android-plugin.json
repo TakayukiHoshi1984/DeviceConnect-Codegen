@@ -1,0 +1,17 @@
+{
+  "compileSdkVersion": "28",
+  "minSdkVersion": "19",
+  "targetSdkVersion": "28",
+  "deviceConnectPluginSdkVersion": "2.7.2",
+
+  "additionalProperties": {
+    "testString": "testString",
+    "testInt": 1234567890,
+    "testNumber": 1234567890.1234567890,
+    "testBoolean": true,
+    "testObject": {
+      "objKey": "testObjectChild"
+    },
+    "testArray": ["e1", "e2", "e3"]
+  }
+}

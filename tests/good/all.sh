@@ -9,6 +9,9 @@ rm -rf ./output/
 ./good-android-plugin-005-option-names.sh
 ./good-android-plugin-006-option-connection-type.sh
 ./good-android-plugin-007-option-templates.sh
+./good-android-plugin-008-event-without-interval.sh
+./good-android-plugin-009-same-name-object-props.sh
+./good-android-plugin-010-config-additional-properties.sh
 ./good-html-app-001-input-spec.sh
 ./good-html-app-002-option.sh
 ./good-html-docs-001-input-spec.sh

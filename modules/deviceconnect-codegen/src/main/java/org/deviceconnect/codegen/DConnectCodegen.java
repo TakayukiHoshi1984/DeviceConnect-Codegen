@@ -8,12 +8,12 @@ package org.deviceconnect.codegen;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import config.Config;
-import config.ConfigParser;
+import com.google.common.collect.ImmutableMap;
 import io.swagger.codegen.*;
 import io.swagger.models.*;
 import io.swagger.parser.SwaggerParser;
@@ -153,6 +153,11 @@ public class DConnectCodegen {
                         if (genConfig.hasOption(langCliOption.getOpt())) {
                             config.additionalProperties().put(langCliOption.getOpt(), genConfig.getOption(langCliOption.getOpt()));
                         }
+                    }
+                    config.additionalProperties().putAll(genConfig.getAdditionalProperties());
+
+                    for (Map.Entry<String, Object> prop : config.additionalProperties().entrySet()) {
+                        LOGGER.info("Parsed additionProperties: " + prop.getKey() + "=" + prop.getValue());
                     }
                 }
             }
@@ -693,4 +698,66 @@ public class DConnectCodegen {
         formatter.printHelp("DConnectCodegen", options);
     }
 
+    private static class Config {
+
+        private final Map<String, String> options = new HashMap<>();
+        private final Map<String, Object> additionalProperties = new HashMap<>();
+
+        Map<String, String> getOptions() {
+            return ImmutableMap.copyOf(options);
+        }
+
+        boolean hasOption(String opt) {
+            return options.containsKey(opt);
+        }
+
+        String getOption(String opt) {
+            return options.get(opt);
+        }
+
+        void setOption(String opt, String value) {
+            options.put(opt, value);
+        }
+
+        Map<String, Object> getAdditionalProperties() {
+            return ImmutableMap.copyOf(additionalProperties);
+        }
+
+        void addAdditionalProperties(final Map<String, Object> properties) {
+            additionalProperties.putAll(properties);
+        }
+    }
+
+    private static class ConfigParser {
+
+        private static final Logger LOGGER = LoggerFactory.getLogger(config.ConfigParser.class);
+
+        public static Config read(String location) {
+           ObjectMapper mapper = new ObjectMapper();
+
+            Config config = new Config();
+
+            try {
+                JsonNode rootNode = mapper.readTree(new File(location));
+                Iterator<Map.Entry<String, JsonNode>> optionNodes = rootNode.fields();
+
+                while (optionNodes.hasNext()) {
+                    Map.Entry<String, JsonNode> optionNode = optionNodes.next();
+                    if (optionNode.getValue().isValueNode()) {
+                        config.setOption(optionNode.getKey(), optionNode.getValue().asText());
+                    } else if (optionNode.getValue().isObject() && "additionalProperties".equals(optionNode.getKey())) {
+                        Map<String, Object> map = mapper.convertValue(optionNode.getValue(), new TypeReference<Map<String, Object>>() {});
+                        config.addAdditionalProperties(map);
+                    } else {
+                        LOGGER.warn("omitting non-value node " + optionNode.getKey());
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+                return null;
+            }
+
+            return config;
+        }
+    }
 }

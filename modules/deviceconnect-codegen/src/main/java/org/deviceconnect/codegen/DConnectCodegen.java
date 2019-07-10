@@ -185,7 +185,7 @@ public class DConnectCodegen {
             if (cmd.hasOption("r")) {
                 gradlePluginVersion = cmd.getOptionValue("r");
             } else {
-                gradlePluginVersion = "3.0.0";
+                gradlePluginVersion = "3.1.0";
             }
             clientOpts.getProperties().put("gradlePluginVersion", gradlePluginVersion);
 

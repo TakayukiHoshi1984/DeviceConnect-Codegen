@@ -42,14 +42,14 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
     private final String modelDocPath = "docs/";
 
     {
-        addOption("targetSdkVersion", "", "28");
-        addOption("minSdkVersion", "", "19");
-        addOption("compileSdkVersion", "", "28");
-        addOption("deviceConnectPluginSdkVersion", "", "2.7.2");
-        addOption("deviceConnectSdkForAndroidVersion", "", "2.3.1");
+        putOption("targetSdkVersion", "", "28");
+        putOption("minSdkVersion", "", "19");
+        putOption("compileSdkVersion", "", "28");
+        putOption("deviceConnectPluginSdkVersion", "", "2.7.2");
+        putOption("deviceConnectSdkForAndroidVersion", "", "2.3.1");
     }
 
-    private void addOption(final String name, final String description, final String defaultValue) {
+    private void putOption(final String name, final String description, final String defaultValue) {
         CliOption option = CliOption.newString(name, description);
         option.setDefault(defaultValue);
         this.cliOptions.add(option);
@@ -595,7 +595,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
 
         Map<String, Property> props = root.getProperties();
         if (props != null && props.size() > 0) {
-            writeExampleResponse(root, "root", lines);
+            writeExampleResponse(swagger, root, "root", lines);
         }
         return lines;
     }
@@ -636,30 +636,42 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
 
         Map<String, Property> props = root.getProperties();
         if (props != null && props.size() > 0) {
-            writeExampleEvent(root, "root", lines);
+            writeExampleEvent(swagger, root, "root", lines);
         }
         return lines;
     }
 
-    private void writeExampleResponse(final ObjectProperty root, final String rootName,
+    private void writeExampleResponse(final Swagger swagger,
+                                      final ObjectProperty root,
+                                      final String rootName,
                                       final List<String> lines) {
         lines.add("Bundle " + rootName + " = response.getExtras();");
-        writeExampleMessage(root, rootName, "", lines);
+        writeExampleMessage(swagger, root, rootName, "", lines);
         lines.add("response.putExtras(" + rootName + ");");
     }
 
-    private void writeExampleEvent(final ObjectProperty root, final String rootName,
+    private void writeExampleEvent(final Swagger swagger,
+                                   final ObjectProperty root,
+                                   final String rootName,
                                    final List<String> lines) {
         lines.add("Bundle " + rootName + " = message.getExtras();");
-        writeExampleMessage(root, rootName, "", lines);
+        writeExampleMessage(swagger, root, rootName, "", lines);
         lines.add("message.putExtras(" + rootName + ");");
     }
 
-    private void writeExampleMessage(final ObjectProperty root,
+    private void writeExampleMessage(final Swagger swagger,
+                                     final ObjectProperty root,
                                      final String rootName,
                                      final String objectNamePrefix,
                                      final List<String> lines) {
-        Map<String, Property> props = root.getProperties();
+        writeExampleMessage(swagger, root.getProperties(), rootName, objectNamePrefix, lines);
+    }
+
+    private void writeExampleMessage(final Swagger swagger,
+                                     final Map<String, Property> props,
+                                     final String rootName,
+                                     final String objectNamePrefix,
+                                     final List<String> lines) {
         if (props == null) {
             return;
         }
@@ -670,31 +682,36 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
             String type = prop.getType();
             String format = prop.getFormat();
             if ("array".equals(type)) {
-                ArrayProperty arrayProp;
-                if (!(prop instanceof  ArrayProperty)) {
+                System.out.println("writeExampleMessage: array: " + prop.getClass());
+                if (!(prop instanceof ArrayProperty)) {
                     continue;
                 }
-                arrayProp = (ArrayProperty) prop;
+                ArrayProperty arrayProp = (ArrayProperty) prop;
                 Property itemsProp = arrayProp.getItems();
-                String arrayClassName = getArrayClassName(itemsProp);
-                if (arrayClassName == null) {
-                    continue;
-                }
-                lines.add(arrayClassName + "[] " + propName + " = new " + arrayClassName + "[1];");
-                if ("object".equals(itemsProp.getType())) {
-                    String index = "0";
-                    String objectPropName = getObjectName(objectNamePrefix, propName);
-                    String arrayPropName = objectPropName  + "[" + index + "]";
-                    lines.add(arrayPropName + " = new Bundle();");
-                    writeExampleMessage((ObjectProperty) itemsProp, arrayPropName, objectPropName, lines);
-                    lines.add(rootName + ".putParcelableArray(\"" + propName + "\", " + objectPropName + ");");
+                System.out.println("writeExampleMessage: itemsProp: " + itemsProp.getClass());
+                if (itemsProp instanceof RefProperty) {
+                    RefProperty refItemsProp = (RefProperty) itemsProp;
+                    System.out.println("writeExampleMessage: refItemsProp: SimpleRef = " + refItemsProp.getSimpleRef()
+                            + ", $ref = " + refItemsProp.get$ref()
+                            + ", RefFormat = " + refItemsProp.getRefFormat());
+                    Model itemModel = findDefinition(swagger, refItemsProp.getSimpleRef());
+                    writeArrayExample(swagger, rootName, propName, itemModel.getProperties(), objectNamePrefix, lines);
                 } else {
-                    lines.add(propName + "[0] = " + getExampleValue(itemsProp) + ";");
-                    String setterName = getSetterName(itemsProp.getType(), itemsProp.getFormat());
-                    if (setterName == null) {
+                    String arrayClassName = getArrayClassName(itemsProp);
+                    if (arrayClassName == null) {
                         continue;
                     }
-                    lines.add(rootName + "." + setterName +  "Array(\"" + propName + "\", " + propName + ");");
+                    lines.add(arrayClassName + "[] " + propName + " = new " + arrayClassName + "[1];");
+                    if ("object".equals(itemsProp.getType())) {
+                        writeArrayExample(swagger, rootName, propName, ((ObjectProperty) itemsProp).getProperties(), objectNamePrefix, lines);
+                    } else {
+                        lines.add(propName + "[0] = " + getExampleValue(itemsProp) + ";");
+                        String setterName = getSetterName(itemsProp.getType(), itemsProp.getFormat());
+                        if (setterName == null) {
+                            continue;
+                        }
+                        lines.add(rootName + "." + setterName +  "Array(\"" + propName + "\", " + propName + ");");
+                    }
                 }
             } else if ("object".equals(type)) {
                 ObjectProperty objectProp;
@@ -704,7 +721,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
                 objectProp = (ObjectProperty) prop;
                 String objectPropName = getObjectName(objectNamePrefix, propName);
                 lines.add("Bundle " + objectPropName + " = new Bundle();");
-                writeExampleMessage(objectProp, objectPropName, objectPropName, lines);
+                writeExampleMessage(swagger, objectProp, objectPropName, objectPropName, lines);
                 lines.add(rootName  + ".putBundle(\"" + propName + "\", " + objectPropName + ");");
             } else {
                 String setterName = getSetterName(type, format);
@@ -714,6 +731,20 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
                 lines.add(rootName + "." + setterName +  "(\""+ propName + "\", " + getExampleValue(prop) + ");");
             }
         }
+    }
+
+    private void writeArrayExample(final Swagger swagger,
+                                   final String rootName,
+                                   final String propName,
+                                   final Map<String, Property> props,
+                                   final String objectNamePrefix,
+                                   final List<String> lines) {
+        String index = "0";
+        String objectPropName = getObjectName(objectNamePrefix, propName);
+        String arrayPropName = objectPropName  + "[" + index + "]";
+        lines.add(arrayPropName + " = new Bundle();");
+        writeExampleMessage(swagger, props, arrayPropName, objectPropName, lines);
+        lines.add(rootName + ".putParcelableArray(\"" + propName + "\", " + objectPropName + ");");
     }
 
     private String getObjectName(final String rootName, final String name) {

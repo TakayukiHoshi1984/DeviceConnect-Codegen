@@ -7,4 +7,5 @@ java -jar ../../bin/deviceconnect-codegen.jar \
      --display-name Test005 \
      --input-spec   profile-specs/swagger.json \
      --output       output/android-plugin-005 \
-     --class-prefix Your
+     --class-prefix Your \
+     --config configs/android-plugin.json

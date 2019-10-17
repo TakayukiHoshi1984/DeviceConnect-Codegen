@@ -6,4 +6,5 @@ java -jar ../../bin/deviceconnect-codegen.jar \
      --package-name   com.mydomain.testplugin004 \
      --display-name   Test004 \
      --input-spec     profile-specs/swagger-files-multiple \
-     --output         output/android-plugin-004
+     --output         output/android-plugin-004 \
+     --config configs/android-plugin.json

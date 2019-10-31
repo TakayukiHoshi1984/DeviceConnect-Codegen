@@ -162,7 +162,12 @@ public class DConnectCodegen {
                 }
             }
             if (cmd.hasOption("t")) {
-                clientOpts.getProperties().put(CodegenConstants.TEMPLATE_DIR, String.valueOf(cmd.getOptionValue("t")));
+                String dirPath = String.valueOf(cmd.getOptionValue("t"));
+                if (!new File(dirPath).exists()) {
+                    reportError(new Errors.TemplateDirNotFound(dirPath));
+                    return;
+                }
+                clientOpts.getProperties().put(CodegenConstants.TEMPLATE_DIR, dirPath);
             }
 
             String displayName;

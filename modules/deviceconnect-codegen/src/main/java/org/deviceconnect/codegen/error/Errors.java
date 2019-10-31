@@ -79,6 +79,14 @@ public final class Errors {
         }
     }
 
+    public static class TemplateDirNotFound extends CodegenError {
+
+        public TemplateDirNotFound(final String dirPath) {
+            String message = getMessageForKey("errorTemplateDirNotFound");
+            mMessage = message + ": " + dirPath;
+        }
+    }
+
     public static class InvalidJson extends CodegenError {
         public InvalidJson(final File file, final JsonProcessingException e) {
             ErrorFormat format = new ErrorFormat("json");

@@ -23,7 +23,7 @@ public final class Const {
     static final ResourceBundle MESSAGES = ResourceBundle.getBundle("Messages", Locale.getDefault(),
             ResourceBundleWithUtf8.UTF8_ENCODING_CONTROL);
 
-    public static final Options OPTIONS = createOptions();
+    public static final Options OPTIONS;
 
     static Map<String, DConnectCodegenConfig> configs = new HashMap<String, DConnectCodegenConfig>();
 
@@ -55,15 +55,16 @@ public final class Const {
             }
             sb.append(config.getName());
             configs.put(config.getName(), config);
-            configString = sb.toString();
         }
+        configString = sb.toString();
+        OPTIONS = createOptions();
     }
 
     static List<DConnectCodegenConfig> getExtensions() {
         ServiceLoader<DConnectCodegenConfig> loader = ServiceLoader.load(DConnectCodegenConfig.class);
         List<DConnectCodegenConfig> output = new ArrayList<DConnectCodegenConfig>();
-        for (DConnectCodegenConfig aLoader : loader) {
-            output.add(aLoader);
+        for (DConnectCodegenConfig config : loader) {
+            output.add(config);
         }
         return output;
     }
@@ -72,27 +73,27 @@ public final class Const {
         Options options = new Options();
 
         // Required
-        options.addOption(option(true, "l", "lang", true, "client language to generate.\nAvailable languages include:\n\t[" + configString + "]"));
-        options.addOption(option(true, "o", "output", true, "where to write the generated files"));
+        options.addOption(option(true, "l", "lang", true, "client language to generate.\nAvailable languages include:\n\t[" + Const.configString + "]"));
+        options.addOption(option(true, "o", "output", true, "where to write the generated files."));
         OptionGroup inputSpecOptions = new OptionGroup();
         inputSpecOptions.setRequired(true);
-        inputSpecOptions.addOption(new Option("s", "input-spec-dir", true, "directory of the swagger specs"));
-        inputSpecOptions.addOption(new Option("i", "input-spec", true, "location of the swagger spec, as URL, file or directory"));
+        inputSpecOptions.addOption(new Option("s", "input-spec-dir", true, "directory of the swagger specs."));
+        inputSpecOptions.addOption(new Option("i", "input-spec", true, "location of the swagger spec, as URL, file or directory."));
         options.addOptionGroup(inputSpecOptions);
 
         // Optional
         options.addOption("h", "help", false, "shows this message");
-        options.addOption("t", "template-dir", true, "folder containing the template files");
-        options.addOption("d", "debug-info", false, "prints additional info for debugging");
+        options.addOption("t", "template-dir", true, "folder containing the template files.");
+        options.addOption("d", "debug-info", false, "prints additional info for debugging.");
         //options.addOption("a", "auth", true, "adds authorization headers when fetching the swagger definitions remotely. Pass in a URL-encoded string of name:header with a comma separating multiple values");
-        options.addOption("c", "config", true, "location of the configuration file");
-        options.addOption("p", "package-name", true, "package name (for deviceConnectAndroidPlugin only)");
-        options.addOption("n", "display-name", true, "display name of the generated project");
-        options.addOption("x", "class-prefix", true, "prefix of each generated class that implements a device connect profile");
-        options.addOption("b", "connection-type", true, "connection type with device connect manager (for deviceConnectAndroidPlugin only)");
-        options.addOption("r", "gradle-plugin-version", true, "version of Android Plugin for Gradle");
-        options.addOption("k", "sdk", true, "location of Device Connect SDKs");
-        options.addOption("g", "signing-configs", true, "location of singing configs");
+        options.addOption("c", "config", true, "location of the configuration file.");
+        options.addOption("p", "package-name", true, "package name (for Android only)");
+        options.addOption("n", "display-name", true, "display name of the generated project.");
+        options.addOption("x", "class-prefix", true, "prefix of each generated class that implements a device connect profile. (for Android and iOS only)");
+        options.addOption("b", "connection-type", true, "specifies the connection type with device connect manager by \"binder\" or \"broadcast\"; The default value is \"broadcast\". (for Android only)");
+        options.addOption("r", "gradle-plugin-version", true, "version of Android Plugin for Gradle. The default value is \"3.0.0\". (for Android only)");
+        options.addOption("k", "sdk", true, "location of Device Connect SDKs.");
+        options.addOption("g", "signing-configs", true, "location of singing configs.");
         options.addOption("w", "overwrite", false, "allow to delete a directory which exists already on the specified path by `output` option before output.");
 
         return options;

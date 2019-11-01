@@ -41,7 +41,7 @@ public final class Errors {
                     }
                     result += groupStr + "\n";
                 } else {
-                    Option found = Const.OPTIONS.getOption(opt.toString());
+                    Option found = Const.MAIN_OPTIONS.getOption(opt.toString());
                     if (found != null) {
                         result += found.getLongOpt() + "\n";
                     }

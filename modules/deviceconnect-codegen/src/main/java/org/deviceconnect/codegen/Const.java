@@ -23,7 +23,8 @@ public final class Const {
     static final ResourceBundle MESSAGES = ResourceBundle.getBundle("Messages", Locale.getDefault(),
             ResourceBundleWithUtf8.UTF8_ENCODING_CONTROL);
 
-    public static final Options OPTIONS;
+    public static final Options MAIN_OPTIONS;
+    public static final Options HELP_OPTION;
 
     static Map<String, DConnectCodegenConfig> configs = new HashMap<String, DConnectCodegenConfig>();
 
@@ -57,7 +58,8 @@ public final class Const {
             configs.put(config.getName(), config);
         }
         configString = sb.toString();
-        OPTIONS = createOptions();
+        MAIN_OPTIONS = createOptions();
+        HELP_OPTION = createHelpOption();
     }
 
     static List<DConnectCodegenConfig> getExtensions() {
@@ -67,6 +69,12 @@ public final class Const {
             output.add(config);
         }
         return output;
+    }
+
+    private static Options createHelpOption() {
+        Options options = new Options();
+        options.addOption("h", "help", false, "shows this message");
+        return options;
     }
 
     private static Options createOptions() {
@@ -90,7 +98,7 @@ public final class Const {
         options.addOption("p", "package-name", true, "package name (for Android only)");
         options.addOption("n", "display-name", true, "display name of the generated project.");
         options.addOption("x", "class-prefix", true, "prefix of each generated class that implements a device connect profile. (for Android and iOS only)");
-        options.addOption("b", "connection-type", true, "specifies the connection type with device connect manager by \"binder\" or \"broadcast\"; The default value is \"broadcast\". (for Android only)");
+        options.addOption("b", "connection-type", true, "specifies the connection type with device connect manager by \"binder\" or \"broadcast\"; The default value is \"binder\". (for Android only)");
         options.addOption("r", "gradle-plugin-version", true, "version of Android Plugin for Gradle. The default value is \"3.0.0\". (for Android only)");
         options.addOption("k", "sdk", true, "location of Device Connect SDKs.");
         options.addOption("g", "signing-configs", true, "location of singing configs.");

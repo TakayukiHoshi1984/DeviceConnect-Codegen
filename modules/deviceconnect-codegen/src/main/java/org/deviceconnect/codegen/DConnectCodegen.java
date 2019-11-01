@@ -68,8 +68,6 @@ public class DConnectCodegen {
     public static void main(String[] args) {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "warn");
 
-        Options options = Const.OPTIONS;
-
         ClientOptInput clientOptInput = new ClientOptInput();
         ClientOpts clientOpts = new ClientOpts();
 
@@ -77,6 +75,15 @@ public class DConnectCodegen {
         try {
             CommandLineParser parser = new BasicParser();
             DConnectCodegenConfig config;
+
+            Options options = Const.MAIN_OPTIONS;
+            try {
+                cmd = parser.parse(Const.HELP_OPTION, args);
+                if (cmd.hasOption("h")) {
+                    usage(options);
+                    return;
+                }
+            } catch (ParseException ignored) {}
 
             cmd = parser.parse(options, args);
             if (cmd.hasOption("d")) {

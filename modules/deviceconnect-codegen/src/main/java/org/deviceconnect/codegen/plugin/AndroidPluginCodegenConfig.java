@@ -55,6 +55,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
         CliOption option = CliOption.newString(name, description);
         option.setDefault(defaultValue);
         this.cliOptions.add(option);
+        this.additionalProperties.put(name, defaultValue);
     }
 
     @Override

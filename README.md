@@ -38,8 +38,8 @@ Changed: /(略)/DeviceConnect-Codegen/README.md
 Completed
 ```
 
-### 使用マニュアル
-使用マニュアルは[こちら](https://github.com/DeviceConnect/DeviceConnect-Codegen/blob/master/MANUAL.md)
+## 使用方法
+作成したツールを使い、スケルトンコードを作成する手順は、[こちら](https://github.com/DeviceConnect/DeviceConnect-Codegen/blob/master/MANUAL.md)を参照してください。
 
 ## 参考リンク
 - [Swagger](http://swagger.io/)

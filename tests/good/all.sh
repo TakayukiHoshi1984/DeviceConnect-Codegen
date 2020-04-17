@@ -12,6 +12,8 @@ rm -rf ./output/
 ./good-android-plugin-008-event-without-interval.sh
 ./good-android-plugin-009-same-name-object-props.sh
 ./good-android-plugin-010-config-additional-properties.sh
+./good-android-plugin-011-option-config-none.sh
+./good-android-plugin-012-option-config-for-sdk-2.8.4.sh
 ./good-html-app-001-input-spec.sh
 ./good-html-app-002-option.sh
 ./good-html-docs-001-input-spec.sh

@@ -30,7 +30,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
         BROADCAST,
         BINDER
     }
-    private static final String DEVICE_PLUGIN_SDK_VERSION_NAME = "2.8.4.9";
+    private static final String DEVICE_PLUGIN_SDK_VERSION_NAME = "2.8.4";
     private final String pluginModuleFolder = "plugin";
     private final String projectFolder = pluginModuleFolder + "/src/main";
     private final String sourceFolder = projectFolder + "/java";

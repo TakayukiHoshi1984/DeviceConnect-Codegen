@@ -23,7 +23,7 @@ android {
         versionCode 1
         versionName '1.0.0'
     }
-    
+
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
@@ -52,14 +52,14 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
     }
-    
+
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
     repositories {
         maven {
             name = "DeviceConnect-Android"
-            url = uri("https://maven.pkg.github.com/TakayukiHoshi1984/DeviceConnect-Android")
+            url = uri("https://maven.pkg.github.com/DeviceConnect/DeviceConnect-Android")
 
             credentials {
                 username = System.getenv("GPR_USER") ?: githubProperties['gpr.usr']

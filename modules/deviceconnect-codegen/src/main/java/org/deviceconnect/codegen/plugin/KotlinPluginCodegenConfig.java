@@ -1,6 +1,6 @@
 /*
- AndroidPluginCodegenConfig.java
- Copyright (c) 2018 NTT DOCOMO,INC.
+ KotlinPluginCodegenConfig.java
+ Copyright (c) 2020 NTT DOCOMO,INC.
  Released under the MIT license
  http://opensource.org/licenses/mit-license.php
  */
@@ -22,9 +22,11 @@ import org.deviceconnect.codegen.util.VersionName;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
+public class KotlinPluginCodegenConfig extends AbstractPluginCodegenConfig {
 
     public enum ConnectionType {
         BROADCAST,
@@ -183,7 +185,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
 
         ProfileTemplate template = new ProfileTemplate();
         template.templateFile = "java" + File.separator + "profile.mustache";
-        template.outputFile = profileClassName + ".java";
+        template.outputFile = profileClassName + ".kt";
         profileTemplates.add(template);
         return profileTemplates;
     }
@@ -198,10 +200,10 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
     public CodegenType getTag() { return CodegenType.OTHER; }
 
     @Override
-    public String getName() { return "deviceConnectAndroidPlugin"; }
+    public String getName() { return "deviceConnectKotlinPlugin"; }
 
     @Override
-    public String getHelp() { return "Generates a stub of Device Connect Plug-in for Android."; }
+    public String getHelp() { return "Generates a stub of Device Connect Plug-in for Android(Kotlin)."; }
 
     @Override
     public String apiFileFolder() {
@@ -262,7 +264,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
         final String messageServiceClass = classPrefix + "MessageService";
         final String messageServiceProviderClass = classPrefix + "MessageServiceProvider";
         additionalProperties.put(CodegenConstants.INVOKER_PACKAGE, invokerPackage);
-        additionalProperties.put("serviceId", classPrefix.toLowerCase() + "_service_id");
+        additionalProperties.put("serviceId", classPrefix.toLowerCase() + "_kotlin_service_id");
         additionalProperties.put("messageServiceClass", messageServiceClass);
         additionalProperties.put("messageServiceProviderClass", messageServiceProviderClass);
 
@@ -299,13 +301,13 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
 
         // 実装ファイル (全プラグイン共通)
         final String packageFolder = getPluginPackageRootDir();
-        supportingFiles.add(new SupportingFile("java/MessageServiceProvider.kt.mustache", packageFolder, messageServiceProviderClass + ".java"));
-        supportingFiles.add(new SupportingFile("java/MessageService.java.mustache", packageFolder, messageServiceClass + ".java"));
-        supportingFiles.add(new SupportingFile("java/SystemProfile.kt.mustache", packageFolder + File.separator + "profiles", classPrefix + "SystemProfile.java"));
-        supportingFiles.add(new SupportingFile("java/SettingActivity.kt.mustache", packageFolder, classPrefix + "SettingActivity.java"));
+        supportingFiles.add(new SupportingFile("java/MessageServiceProvider.kt.mustache", packageFolder, messageServiceProviderClass + ".kt"));
+        supportingFiles.add(new SupportingFile("java/MessageService.kt.mustache", packageFolder, messageServiceClass + ".kt"));
+        supportingFiles.add(new SupportingFile("java/SystemProfile.kt.mustache", packageFolder + File.separator + "profiles", classPrefix + "SystemProfile.kt"));
+        supportingFiles.add(new SupportingFile("java/SettingActivity.kt.mustache", packageFolder, classPrefix + "SettingActivity.kt"));
         if (connectionType == ConnectionType.BROADCAST) {
             additionalProperties.put("launchServiceClass", classPrefix + "LaunchService");
-            supportingFiles.add(new SupportingFile("java/LaunchService.java.mustache", packageFolder, classPrefix + "LaunchService.java"));
+            supportingFiles.add(new SupportingFile("java/LaunchService.kt.mustache", packageFolder, classPrefix + "LaunchService.kt"));
         }
     }
 
@@ -372,12 +374,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
         if (version == null) {
             version = ver3;
         }
-        String dirName;
-        if (version.isEqualOrMoreThan(ver3)) {
-            dirName = "3_x_x";
-        } else {
-            dirName = "2_x_x";
-        }
+        String dirName = "3_x_x";
         return "gradleFiles/" + dirName;
     }
 
@@ -491,12 +488,12 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
             if (example == null) {
                 example = "/path/to/file";
             }
-            example = "new File(\"" + escapeText(example) + "\")";
+            example = " File(\"" + escapeText(example) + "\")";
         } else if ("Date".equals(type)) {
-            example = "new Date()";
+            example = " Date()";
         } else if (!languageSpecificPrimitives.contains(type)) {
             // type is a model class, e.g. User
-            example = "new " + type + "()";
+            example =  type + "()";
         }
 
         if (example == null) {
@@ -504,7 +501,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
         } else if (Boolean.TRUE.equals(p.isListContainer)) {
             example = "Arrays.asList(" + example + ")";
         } else if (Boolean.TRUE.equals(p.isMapContainer)) {
-            example = "new HashMap()";
+            example = "HashMap()";
         }
 
         p.example = example;
@@ -567,20 +564,20 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
             typeName = "String";
             hasParser = false;
         } else if ("file".equals(type)) {
-            typeName = "byte[]";
+            typeName = "ByteArray";
             hasParser = false;
         } else {
             typeName = "Object";
             hasParser = false;
         }
-        String leftOperand = typeName + " " + varName;
+        String leftOperand = "val " + varName;
         String rightOperand;
         if (hasParser) {
             rightOperand = "parse" + typeName + "(request, \"" + varName + "\")";
         } else {
-            rightOperand = "(" + typeName + ") request.getExtras().get(\"" + varName + "\")";
+            rightOperand = "request.extras!![\"" + varName + "\"] as " + typeName + "?";
         }
-        return leftOperand + " = " + rightOperand + ";";
+        return leftOperand + " = " + rightOperand;
     }
 
     @Override
@@ -669,16 +666,16 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
                                       final ObjectProperty root,
                                       final String rootName,
                                       final List<String> lines) {
-        lines.add("Bundle " + rootName + " = response.getExtras();");
+        lines.add("val " + rootName + " = response.extras");
         writeExampleMessage(swagger, root, rootName, "", lines);
-        lines.add("response.putExtras(" + rootName + ");");
+        lines.add("response.putExtras(" + rootName + ")");
     }
 
     private void writeExampleEvent(final Swagger swagger,
                                    final ObjectProperty root,
                                    final String rootName,
                                    final List<String> lines) {
-        lines.add("Bundle " + rootName + " = message.getExtras();");
+        lines.add("val " + rootName + " = response.extras");
         writeExampleMessage(swagger, root, rootName, "", lines);
         lines.add("message.putExtras(" + rootName + ");");
     }
@@ -725,16 +722,16 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
                     if (arrayClassName == null) {
                         continue;
                     }
-                    lines.add(arrayClassName + "[] " + propName + " = new " + arrayClassName + "[1];");
+                    lines.add("val " + propName + " = arrayOfNulls<" + arrayClassName + ">(1)");
                     if ("object".equals(itemsProp.getType())) {
                         writeArrayExample(swagger, rootName, propName, ((ObjectProperty) itemsProp).getProperties(), objectNamePrefix, lines);
                     } else {
-                        lines.add(propName + "[0] = " + getExampleValue(itemsProp) + ";");
+                        lines.add(propName + "[0] = " + getExampleValue(itemsProp));
                         String setterName = getSetterName(itemsProp.getType(), itemsProp.getFormat());
                         if (setterName == null) {
                             continue;
                         }
-                        lines.add(rootName + "." + setterName +  "Array(\"" + propName + "\", " + propName + ");");
+                        lines.add(rootName + "!!." + setterName +  "Array(\"" + propName + "\", " + propName + ")");
                     }
                 }
             } else if ("object".equals(type)) {
@@ -744,15 +741,15 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
                 }
                 objectProp = (ObjectProperty) prop;
                 String objectPropName = getObjectName(objectNamePrefix, propName);
-                lines.add("Bundle " + objectPropName + " = new Bundle();");
+                lines.add("val " + objectPropName + " = Bundle()");
                 writeExampleMessage(swagger, objectProp, objectPropName, objectPropName, lines);
-                lines.add(rootName  + ".putBundle(\"" + propName + "\", " + objectPropName + ");");
+                lines.add(rootName  + "!!.putBundle(\"" + propName + "\", " + objectPropName + ")");
             } else {
                 String setterName = getSetterName(type, format);
                 if (setterName == null) {
                     continue;
                 }
-                lines.add(rootName + "." + setterName +  "(\""+ propName + "\", " + getExampleValue(prop) + ");");
+                lines.add(rootName + "!!." + setterName +  "(\""+ propName + "\", " + getExampleValue(prop) + ")");
             }
         }
     }
@@ -766,9 +763,9 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
         String index = "0";
         String objectPropName = getObjectName(objectNamePrefix, propName);
         String arrayPropName = objectPropName  + "[" + index + "]";
-        lines.add(arrayPropName + " = new Bundle();");
+        lines.add(arrayPropName + " = Bundle()");
         writeExampleMessage(swagger, props, arrayPropName, objectPropName, lines);
-        lines.add(rootName + ".putParcelableArray(\"" + propName + "\", " + objectPropName + ");");
+        lines.add(rootName + "!!.putParcelableArray(\"" + propName + "\", " + objectPropName + ");");
     }
 
     private String getObjectName(final String rootName, final String name) {

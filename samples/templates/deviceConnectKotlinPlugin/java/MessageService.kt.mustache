@@ -1,0 +1,52 @@
+package {{invokerPackage}};
+
+import org.deviceconnect.android.message.DConnectMessageService;
+import org.deviceconnect.android.profile.SystemProfile;
+import org.deviceconnect.android.service.DConnectService;
+
+{{#supportedProfileClasses}}
+import {{profilePackage}}.{{name}};
+{{/supportedProfileClasses}}
+import {{profilePackage}}.{{classPrefix}}SystemProfile;
+import org.deviceconnect.profile.ServiceDiscoveryProfileConstants.NetworkType;
+
+
+class {{messageServiceClass}}: DConnectMessageService() {
+
+    override fun onCreate() {
+        super.onCreate();
+        // TODO 以降の処理では常駐型のサービスを生成しています. 要件に適さない場合は修正してください.
+        val service = DConnectService("{{serviceId}}")
+        // TODO サービス名の設定
+        service.name = "{{displayName}} Service"
+        // TODO サービスの使用可能フラグのハンドリング
+        service.isOnline = true
+        // TODO ネットワークタイプの指定 (例: BLE, Wi-Fi)
+        service.setNetworkType(NetworkType.UNKNOWN)
+        {{#supportedProfileClasses}}
+        service.addProfile({{name}}())
+        {{/supportedProfileClasses}}
+        serviceProvider.addService(service)
+
+    }
+
+    override fun getSystemProfile(): SystemProfile {
+        return {{classPrefix}}SystemProfile()
+    }
+
+    override fun onManagerUninstalled() {
+        // TODO Device Connect Managerアンインストール時に実行したい処理. 実装は任意.
+    }
+
+    override fun onManagerTerminated() {
+        // TODO Device Connect Manager停止時に実行したい処理. 実装は任意.
+    }
+
+    override fun onManagerEventTransmitDisconnected(origin: String?) {
+        // TODO アプリとのWebSocket接続が切断された時に実行したい処理. 実装は任意.
+    }
+
+    override fun onDevicePluginReset() {
+        // TODO Device Connect Managerの設定画面上で「プラグイン再起動」を要求された場合の処理. 実装は任意.
+    }
+}

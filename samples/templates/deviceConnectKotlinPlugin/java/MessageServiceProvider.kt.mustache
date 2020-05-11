@@ -1,0 +1,12 @@
+package {{invokerPackage}};
+
+import android.app.Service;
+
+import org.deviceconnect.android.message.DConnectMessageServiceProvider;
+
+class {{messageServiceProviderClass}}: DConnectMessageServiceProvider<Service>() {
+    override fun getServiceClass(): Class<Service>  {
+        val clazz = {{messageServiceClass}}::class.java as Class<out Service>
+        return (clazz as Class<Service>)
+    }
+}

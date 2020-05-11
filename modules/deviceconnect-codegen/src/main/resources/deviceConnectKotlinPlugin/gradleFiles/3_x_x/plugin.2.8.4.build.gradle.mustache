@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+// Create github.properties in root project folder file with
+// gpr.usr=GITHUB_USER_ID
+// gpr.key=PERSONAL_ACCESS_TOKEN
+def githubPropertiesFile = rootProject.file("github.properties")
+def githubProperties = new Properties()
+if (githubPropertiesFile.exists()) {
+    githubProperties.load(new FileInputStream(githubPropertiesFile))
+}
+
+dependencies {
+    implementation fileTree(include: '*.jar', dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'org.deviceconnect:dconnect-device-plugin-sdk:{{{deviceConnectPluginSdkVersion}}}'
+}
+
+android {
+
+    compileSdkVersion {{compileSdkVersion}}
+
+    defaultConfig {
+        applicationId "{{invokerPackage}}"
+        minSdkVersion {{minSdkVersion}}
+        targetSdkVersion {{targetSdkVersion}}
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    signingConfigs {
+        releaseConfig {
+            storeFile=file(project.properties.storeFile)
+            storePassword=project.properties.storePassword
+            keyAlias=project.properties.keyAlias
+            keyPassword=project.properties.keyPassword
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.releaseConfig
+        }
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+    repositories {
+        maven {
+            name = "DeviceConnect-Android"
+            url = uri("https://maven.pkg.github.com/DeviceConnect/DeviceConnect-Android")
+
+            credentials {
+                username = System.getenv("GPR_USER") ?: githubProperties['gpr.usr']
+                password = System.getenv("GPR_API_KEY") ?: githubProperties['gpr.key']
+            }
+        }
+    }
+}

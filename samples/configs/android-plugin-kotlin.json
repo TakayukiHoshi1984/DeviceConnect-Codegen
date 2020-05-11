@@ -1,0 +1,10 @@
+{
+  "compileSdkVersion": "29",
+  "minSdkVersion": "19",
+  "targetSdkVersion": "29",
+  "deviceConnectPluginSdkVersion": "2.8.4",
+  "gradlePluginVersion": "3.6.2",
+
+  "githubAccountName": "YOUR_NAME",
+  "githubAccountKey": "YOUR_KEY"
+}

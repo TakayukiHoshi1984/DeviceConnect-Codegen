@@ -18,7 +18,9 @@
             <directory>samples</directory>
             <outputDirectory>samples</outputDirectory>
     		<includes>
-    			<include>android-plugin.sh</include>
+               <include>android-plugin-kotlin.sh</include>
+                <include>android-plugin-kotlin.bat</include>
+    			      <include>android-plugin.sh</include>
                 <include>android-plugin.bat</include>
                 <include>ios-plugin.sh</include>
                 <include>ios-plugin.bat</include>

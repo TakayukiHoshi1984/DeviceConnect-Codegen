@@ -1,5 +1,9 @@
 # DeviceConnect Codegen
 
+## はじめに
+DeviceConnect Codegenは、DeviceConnectシステム上で動作するプラグインおよびアプリケーションのスケルトンコードを生成するためのコマンドラインツールです。
+
+
 ## 開発環境
 ### 開発ツール
 - Apache Maven 3.3.9+
@@ -25,18 +29,21 @@ $ mvn package
 例: バージョン a.b.c に変更する場合
 
 ```
-$ cd DeviceConnect-Experiments/DeviceConnectCodegen
+$ cd DeviceConnect-Codegen
 $ python tools/version.py a.b.c
 ```
 
 正常に変更された場合は、以下のログが標準出力される。
 
 ```
-Changed: /(略)/DeviceConnect-Experiments/DeviceConnectCodegen/pom.xml
-Changed: /(略)/DeviceConnect-Experiments/DeviceConnectCodegen/modules/deviceconnect-codegen/pom.xml
-Changed: /(略)/DeviceConnect-Experiments/DeviceConnectCodegen/README.md
+Changed: /(略)/DeviceConnect-Codegen/pom.xml
+Changed: /(略)/DeviceConnect-Codegen/modules/deviceconnect-codegen/pom.xml
+Changed: /(略)/DeviceConnect-Codegen/README.md
 Completed
 ```
+
+## 使用方法
+作成したツールを使い、スケルトンコードを作成する手順は、[こちら](https://github.com/DeviceConnect/DeviceConnect-Codegen/blob/master/MANUAL.md)を参照してください。
 
 ## 参考リンク
 - [Swagger](http://swagger.io/)

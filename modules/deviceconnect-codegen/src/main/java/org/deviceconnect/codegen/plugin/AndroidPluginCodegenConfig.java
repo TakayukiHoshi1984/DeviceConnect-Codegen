@@ -30,7 +30,7 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
         BROADCAST,
         BINDER
     }
-
+    private static final String DEVICE_PLUGIN_SDK_VERSION_NAME = "2.8.4";
     private final String pluginModuleFolder = "plugin";
     private final String projectFolder = pluginModuleFolder + "/src/main";
     private final String sourceFolder = projectFolder + "/java";
@@ -42,17 +42,20 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
     private final String modelDocPath = "docs/";
 
     {
-        putOption("targetSdkVersion", "", "28");
+        putOption("targetSdkVersion", "", "29");
         putOption("minSdkVersion", "", "19");
-        putOption("compileSdkVersion", "", "28");
-        putOption("deviceConnectPluginSdkVersion", "", "2.7.2");
-        putOption("deviceConnectSdkForAndroidVersion", "", "2.3.1");
+        putOption("compileSdkVersion", "", "29");
+        putOption("deviceConnectPluginSdkVersion", "", DEVICE_PLUGIN_SDK_VERSION_NAME);
+        putOption("deviceConnectSdkForAndroidVersion", "", "2.3.2");
+        putOption("githubAccountName", "", "YOUR_NAME");
+        putOption("githubAccountKey", "", "YOUR_KEY");
     }
 
     private void putOption(final String name, final String description, final String defaultValue) {
         CliOption option = CliOption.newString(name, description);
         option.setDefault(defaultValue);
         this.cliOptions.add(option);
+        this.additionalProperties.put(name, defaultValue);
     }
 
     @Override
@@ -277,7 +280,12 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
         String manifest = getManifestTemplateFile();
         supportingFiles.add(new SupportingFile("manifest/" + manifest, getProjectDir(), "AndroidManifest.xml"));
         supportingFiles.add(new SupportingFile(getGradleTemplateDir()+ "/root.build.gradle.mustache", "", "build.gradle"));
-        supportingFiles.add(new SupportingFile(getGradleTemplateDir() + "/plugin.build.gradle.mustache", getPluginModuleDir(), "build.gradle"));
+        if (getGradleTemplateFile().indexOf(DEVICE_PLUGIN_SDK_VERSION_NAME) != -1) {
+            supportingFiles.add(new SupportingFile("github.properties.mustache", "", "github.properties"));
+            supportingFiles.add(new SupportingFile(getGradleTemplateDir() + "/plugin.2.8.4.build.gradle.mustache", getPluginModuleDir(), "build.gradle"));
+        } else{
+            supportingFiles.add(new SupportingFile(getGradleTemplateDir() + "/plugin.build.gradle.mustache", getPluginModuleDir(), "build.gradle"));
+        }
         supportingFiles.add(new SupportingFile("gradle.properties.mustache", "", "gradle.properties"));
         supportingFiles.add(new SupportingFile("resource/xml/deviceplugin.xml.mustache", getPluginResourceDir() + "/xml", getDevicePluginXmlName() + ".xml"));
         supportingFiles.add(new SupportingFile("resource/values/strings.xml.mustache", getPluginResourceDir() + "/values", "strings.xml"));
@@ -314,6 +322,22 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
                 throw new RuntimeException("Unknown connection type");
         }
         return manifest;
+    }
+
+    protected String getGradleTemplateFile() {
+        String gradleVersion;
+        final VersionName ver2_8_4 = VersionName.parse(DEVICE_PLUGIN_SDK_VERSION_NAME);
+        String versionParam = (String) additionalProperties.get("deviceConnectPluginSdkVersion");
+        VersionName version = VersionName.parse(versionParam);
+        if (version == null) {
+            version = ver2_8_4;
+        }
+        if (version.isEqualOrMoreThan(ver2_8_4)) {
+            gradleVersion = DEVICE_PLUGIN_SDK_VERSION_NAME + ".";
+        } else {
+            gradleVersion = "";
+        }
+        return gradleVersion;
     }
 
     protected String getPluginSourceDir() {

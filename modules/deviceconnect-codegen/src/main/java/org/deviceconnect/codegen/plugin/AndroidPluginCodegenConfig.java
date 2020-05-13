@@ -299,10 +299,10 @@ public class AndroidPluginCodegenConfig extends AbstractPluginCodegenConfig {
 
         // 実装ファイル (全プラグイン共通)
         final String packageFolder = getPluginPackageRootDir();
-        supportingFiles.add(new SupportingFile("java/MessageServiceProvider.kt.mustache", packageFolder, messageServiceProviderClass + ".java"));
+        supportingFiles.add(new SupportingFile("java/MessageServiceProvider.java.mustache", packageFolder, messageServiceProviderClass + ".java"));
         supportingFiles.add(new SupportingFile("java/MessageService.java.mustache", packageFolder, messageServiceClass + ".java"));
-        supportingFiles.add(new SupportingFile("java/SystemProfile.kt.mustache", packageFolder + File.separator + "profiles", classPrefix + "SystemProfile.java"));
-        supportingFiles.add(new SupportingFile("java/SettingActivity.kt.mustache", packageFolder, classPrefix + "SettingActivity.java"));
+        supportingFiles.add(new SupportingFile("java/SystemProfile.java.mustache", packageFolder + File.separator + "profiles", classPrefix + "SystemProfile.java"));
+        supportingFiles.add(new SupportingFile("java/SettingActivity.java.mustache", packageFolder, classPrefix + "SettingActivity.java"));
         if (connectionType == ConnectionType.BROADCAST) {
             additionalProperties.put("launchServiceClass", classPrefix + "LaunchService");
             supportingFiles.add(new SupportingFile("java/LaunchService.java.mustache", packageFolder, classPrefix + "LaunchService.java"));

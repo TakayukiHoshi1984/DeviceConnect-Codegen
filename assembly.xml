@@ -44,6 +44,20 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>samples/templates</directory>
+            <outputDirectory>samples/templates</outputDirectory>
+            <includes>
+                <include>**/</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>samples/configs</directory>
+            <outputDirectory>samples/configs</outputDirectory>
+            <includes>
+                <include>*.json</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>samples/sample-profile-specs/swagger-files</directory>
             <outputDirectory>samples/sample-profile-specs/swagger-files</outputDirectory>
             <includes>

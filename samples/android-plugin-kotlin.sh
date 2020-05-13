@@ -21,6 +21,6 @@ DISPLAY_NAME="MyPluginForKotlin"
 # スケルトンコード生成ツールのバイナリ
 JAR_FILE="../bin/deviceconnect-codegen.jar"
 
-ARGS="--overwrite --input-spec $SPEC  --lang deviceConnectKotlinPlugin --config configs/android-plugin.json --template-dir $TEMPLATE_DIR --package-name $PACKAGE_NAME  --connection-type $CONNECTION_TYPE  --display-name $DISPLAY_NAME  --output $OUTPUT_DIR"
+ARGS="--overwrite --input-spec $SPEC  --lang deviceConnectKotlinPlugin --config configs/android-plugin-kotlin.json --template-dir $TEMPLATE_DIR --package-name $PACKAGE_NAME  --connection-type $CONNECTION_TYPE  --display-name $DISPLAY_NAME  --output $OUTPUT_DIR"
 
 java -Dfile.encoding=UTF-8 -jar $JAR_FILE $ARGS

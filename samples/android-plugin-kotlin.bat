@@ -4,12 +4,11 @@ set LANG=deviceConnectKotlinPlugin
 :: プロファイル定義ファイル
 set SPEC=.\sample-profile-specs\swagger.json
 
+:: スケルトンコード出力先
+set OUTPUT_DIR=.\output\Android\MyPluginForKotlin
 
 :: テンプレート
 set TEMPLATE_DIR="./templates/deviceConnectKotlinPlugin"
-
-:: スケルトンコード出力先
-set OUTPUT_DIR=.\output\Android\MyPluginForKotlin
 
 :: Androidプラグインのパッケージ名
 set PACKAGE_NAME=com.mydomain.myplugin

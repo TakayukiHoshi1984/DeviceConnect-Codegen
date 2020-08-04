@@ -37,7 +37,7 @@ paths:
           $ref: '#/definitions/DeviceOrientationEvent'
         examples:
           application/json:
-            serviceId: dummy.deviceconnect.org
+            serviceId: example.deviceconnect.org
             profile: deviceorientation
             attribute: ondeviceorientation
             orientation:

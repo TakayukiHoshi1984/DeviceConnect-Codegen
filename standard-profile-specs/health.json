@@ -69,7 +69,7 @@
                                         "timeStampString": "2015-05-17T10:02:20+09:00"
                                     },
                                     "device": {
-                                        "productName": "DUMMY DEVICE",
+                                        "productName": "EXAMPLE DEVICE",
                                         "manufacturerName": "",
                                         "modelNumber": "",
                                         "firmwareRevision": "",
@@ -130,7 +130,7 @@
                     },
                     "examples": {
                         "application/json": {
-                            "serviceId": "Host.dummyId.localhost.deviceconnect.org",
+                            "serviceId": "Host.exampleId.localhost.deviceconnect.org",
                             "profile": "health",
                             "attribute": "heart",
                             "heart": {
@@ -165,7 +165,7 @@
                                     "timeStampString": "2015-05-17T10:02:20+09:00"
                                 },
                                 "device": {
-                                    "productName": "DUMMY DEVICE",
+                                    "productName": "EXAMPLE DEVICE",
                                     "manufacturerName": "",
                                     "modelNumber": "",
                                     "firmwareRevision": "",
@@ -271,7 +271,7 @@
                                         "timeStampString": "2015-05-17T10:02:20+09:00"
                                     },
                                     "device": {
-                                        "productName": "DUMMY DEVICE",
+                                        "productName": "EXAMPLE DEVICE",
                                         "manufacturerName": "",
                                         "modelNumber": "",
                                         "firmwareRevision": "",
@@ -332,7 +332,7 @@
                     },
                     "examples": {
                         "application/json": {
-                            "serviceId": "Host.dummyId.localhost.deviceconnect.org",
+                            "serviceId": "Host.exampleId.localhost.deviceconnect.org",
                             "profile": "health",
                             "attribute": "heart",
                             "heart": {
@@ -367,7 +367,7 @@
                                     "timeStampString": "2015-05-17T10:02:20+09:00"
                                 },
                                 "device": {
-                                    "productName": "DUMMY DEVICE",
+                                    "productName": "EXAMPLE DEVICE",
                                     "manufacturerName": "",
                                     "modelNumber": "",
                                     "firmwareRevision": "",
@@ -491,7 +491,7 @@
                     },
                     "examples": {
                         "application/json": {
-                            "serviceId": "Host.dummyId.localhost.deviceconnect.org",
+                            "serviceId": "Host.exampleId.localhost.deviceconnect.org",
                             "profile": "health",
                             "attribute": "heartrate",
                             "heartRate": 80

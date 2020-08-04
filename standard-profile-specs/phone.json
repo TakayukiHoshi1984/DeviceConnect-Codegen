@@ -168,7 +168,7 @@
                     },
                     "examples": {
                         "application/json": {
-                            "serviceId": "Host.dummyId.localhost.deviceconnect.org",
+                            "serviceId": "Host.exampleId.localhost.deviceconnect.org",
                             "profile": "phone",
                             "attribute": "onconnect",
                             "phoneStatus": {
